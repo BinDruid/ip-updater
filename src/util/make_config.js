@@ -1,8 +1,8 @@
 import * as config from "../../config/configuratios.js";
 import got from "got";
 import FS from "fs";
-import { loggers } from "winston";
 const fs = FS.promises;
+import logger from "../../config/winston.js";
 
 const websiteUrl = config.cloudFlareUrl;
 const header = config.headers;
@@ -15,6 +15,7 @@ try {
 
   urlConfig.websites = [];
   urlConfig.updateUrl = [];
+  urlConfig.excludedDomains = config.excludedDomains;
   for (const website of result)
     urlConfig.websites.push((({ id, name }) => ({ id, name }))(website));
 
@@ -24,13 +25,13 @@ try {
       headers: header,
     }).json();
     for (const record of result)
-      if (record.name !== config.arvanDomain && record.name !== config.arvanWeb)
+      if (!urlConfig.excludedDomains.includes(record.name))
         urlConfig.updateUrl.push(
           websiteUrl + "/" + zone.id + "/dns_records" + "/" + `${record.id}`
         );
   }
   await fs.writeFile("./config/default.json", JSON.stringify(urlConfig));
 } catch (err) {
-  loggers.error(err.message, err);
+  logger.error(err.message, err);
 }
 console.log("Url configuration has been set.");
