@@ -1,8 +1,8 @@
-import winston from "winston";
-import { format } from "logform";
-const { combine, timestamp, prettyPrint } = format;
+import winston from "winston"
+import { format } from "logform"
+const { combine, timestamp, prettyPrint } = format
 
-export default winston.createLogger({
+const logger: winston.Logger = winston.createLogger({
   level: "info",
   format: combine(timestamp(), prettyPrint()),
   transports: [
@@ -15,4 +15,6 @@ export default winston.createLogger({
       level: "info",
     }),
   ],
-});
+})
+
+export default logger
