@@ -1,0 +1,19 @@
+{
+  "compilerOptions": {
+    "target": "esnext",
+    "module": "esnext",
+    "strict": true,
+    "esModuleInterop": true,
+    "sourceMap": true,
+    "ignoreDeprecations": "5.0",
+    "types": ["node"],
+    "noImplicitAny": true,
+    "moduleResolution": "nodenext",
+    "baseUrl": ".",
+    "outDir": "dist",
+    "paths": {
+      "@/*": ["./src/*"]
+    }
+  },
+  "include": ["src/**/*", "src/**/*.ts", "config"]
+}
